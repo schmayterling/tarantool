@@ -1008,6 +1008,23 @@ trim_operands(A) ::= expr(Y). {
   A = ast_expr_list_append(ctx->region, NULL, Y);
 }
 
+expr(A) ::= SUBSTRING LP substring_operands(Y) RP. {
+  struct Token name;
+  sqlTokenInit(&name, "SUBSTR");
+  A = ast_expr_new_function(ctx->region, &name, false, Y);
+}
+
+%type substring_operands {struct ast_expr_list *}
+substring_operands(A) ::= expr(S) FROM expr(B). {
+  A = ast_expr_list_append(ctx->region, NULL, S);
+  A = ast_expr_list_append(ctx->region, A, B);
+}
+substring_operands(A) ::= expr(S) FROM expr(B) FOR expr(L). {
+  A = ast_expr_list_append(ctx->region, NULL, S);
+  A = ast_expr_list_append(ctx->region, A, B);
+  A = ast_expr_list_append(ctx->region, A, L);
+}
+
 expr(A) ::= id(X) LP distinct(D) exprlist(Y) RP. {
   A = ast_expr_new_function(ctx->region, &X, D == SF_Distinct, Y);
 }
