@@ -36,3 +36,17 @@ g.test_integer_overflow_in_printf = function(cg)
         t.assert_equals(err.message, exp)
     end)
 end
+
+--
+-- gh-13682: SUBSTRING is a reserved keyword.
+--
+g.test_substring_is_reserved = function(cg)
+    cg.server:exec(function()
+        local sql = [[CREATE TABLE t (SUBSTRING INT PRIMARY KEY);]]
+        local _, err = box.execute(sql)
+        t.assert_str_contains(err.message, "keyword 'SUBSTRING' is reserved")
+        sql = [[CREATE TABLE t ("SUBSTRING" INT PRIMARY KEY);]]
+        t.assert_equals(box.execute(sql), {row_count = 1})
+        box.execute([[DROP TABLE t;]])
+    end)
+end

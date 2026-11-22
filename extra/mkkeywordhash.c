@@ -255,6 +255,7 @@ static Keyword aKeywordTable[] = {
   { "LEADING",                "TK_LEADING",     true  },
   { "TRAILING",               "TK_TRAILING",    true  },
   { "BOTH",                   "TK_BOTH",        true  },
+  { "SUBSTRING",              "TK_STANDARD",    true  },
   { "INTERVAL",               "TK_INTERVAL",    true  },
   { "SEQSCAN",                "TK_SEQSCAN",     false },
   { "SHOW",                   "TK_SHOW",        false },
